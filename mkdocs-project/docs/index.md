@@ -1,10 +1,6 @@
 # Attach HydroBase Locally #
 
-This document explains how to install the State of Colorado’s HydroBase on a computer for the first time, 
-using files downloaded from the internet.  HydroBase is the State of Colorado Division of Water Resource’s 
-database used for water resources data and is distributed by the State as SQL Server Express on a DVD.  
-Installing the database involves downloading and running the installer.  After installing the first time, 
-new HydroBase versions can be installed using steps documented in Section "Attach HydroBase Database" of this document.
+This document explains how to attach the State of Colorado’s HydroBase database locally on a computer for the first time, using files downloaded from the internet.  HydroBase is the State of Colorado Division of Water Resource’s database used for water resources data and was historically distributed by the State as SQL Server Express on a DVD, but is now available on DWR’s FTP site.  Installing the database involves downloading and running the installer.  After installing the first time, new HydroBase versions can be installed using steps documented in Section 5 of this document.
 
 This page includes the following sections:
 
