@@ -64,7 +64,7 @@ The deployment process will be changed when the State has identified where the d
 ## License ##
 
 The license for this documentation is being determined.
-The Open Water Foundation consulting team has recommended using the [Creative Commons Attribution 2-0 Generic (CC BY 2.0) License](https://creativecommons.org/licenses/by/2.0/).
+The Open Water Foundation consulting team has recommended using the [Creative Commons Attribution 4-0 Generic (CC BY 4.0) License](https://creativecommons.org/licenses/by/4.0/).
 
 ## Contributing ##
 
@@ -82,7 +82,6 @@ This repository is maintained by the OpenCDSS team.
 
 ## Release Notes ##
 
-The following release notes indicate the update history for documentation, with GitHub repository issue indicated,
-if applicable (links to issues via README.md are not cleanly supported by GitHub so use the repository issues page to find).
+The following release notes indicate the update history for major milestones. Refer to the repository issues page for incremental changes. 
 
 * 2019-04-12 - initial version
