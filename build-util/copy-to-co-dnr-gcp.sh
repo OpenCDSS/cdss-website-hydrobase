@@ -54,12 +54,12 @@ checkMkdocsVersion() {
 	fi
 }
 
-# Determine the operating system that is running the script
+# Determine  athe operating system that is running the script
 # - mainly care whether Cygwin or MINGW
 checkOperatingSystem()
 {
 	if [ ! -z "${operatingSystem}" ]; then
-		# Have already checked operating system so return
+		# Havelready checked operating system so return
 		return
 	fi
 	operatingSystem="unknown"
@@ -165,7 +165,7 @@ siteFolder=$mkdocsProjectFolder/site
 
 # Set --dryrun to test before actually doing
 dryrun=""
-gsFolder="gs://opencdss.state.co.us/opencdss"
+gsFolder="gs://opencdss.state.co.us/hydrobase"
 
 # Parse the command line
 parseCommandLine $@

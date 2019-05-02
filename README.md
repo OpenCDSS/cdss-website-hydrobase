@@ -59,7 +59,15 @@ The above process could be adapted to use a Windows batch files if necessary.
 
 ## Deploying the Website ##
 
-The deployment process will be changed when the State has identified where the documentation can live within the CDSS website.
+1. The website is deployed by running copy-to-co-dnr-gcp.sh in the build-util directory.
+   This Shell Script is run in Git Bash by running the command "bash copy-to-co-dnr-gcp.sh". 
+2. Running the script requires that gsutil is installed, which is part of the Google Cloud SDK: https://cloud.google.com/sdk/docs/
+   When gsutil is installed, it will need to be authenticated with a Google login that has permissions to write to the DNR - OpenCDSS GCP bucket (below)
+   https://console.cloud.google.com/storage/browser/opencdss.state.co.us?project=dnr-website-host-012639&orgonly=true&supportedpurview=organizationId
+3. Within copy-to-co-dnr-gcp.sh, the variable gsFolder needs to be set to the correct bucket and folder. In this case gsFolder="gs://opencdss.state.co.us/hydrobase".
+4. Once the script is run, the built MKDocs site should be transferred to the GCP bucket.
+5. The website is created: http://opencdss.state.co.us/hydrobase/ or http://opencdss.state.co.us/hydrobase/index.html.
+
 
 ## License ##
 
