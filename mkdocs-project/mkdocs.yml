@@ -10,7 +10,7 @@ pages:
 # - installation notes:  https://github.com/squidfunk/mkdocs-material
 theme:
   name: 'material'
-  favicon: 'images/DWR_icon.ico'
+  favicon: 'images/DWR_icon.gif'
 #theme: readthedocs
 # Don't indicate the repo because Edit will be shown on every page (don't want that in deployed mode)
 # - Also see edit_uri if repo_url is specified
