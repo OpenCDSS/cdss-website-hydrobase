@@ -1,212 +1,359 @@
-# Attach HydroBase Locally #
+# How to Install the Full HydroBase Database from the Cloud (Internet)#
 
-This document explains how to attach the State of Colorado’s HydroBase database locally on a computer for the first time, 
-using files downloaded from the internet.  HydroBase is the State of Colorado Division of Water Resource’s database used 
-for water resources data and was historically distributed by the State as SQL Server Express on a DVD, but is now available 
-on DWR’s FTP site.  Installing the database involves downloading and running the installer.  After installing the first 
-time, new HydroBase versions can be installed using steps documented in Section 5 of this document.
+**Last updated: 2021-01-30**
 
 This page includes the following sections:
 
-* [Download the HydroBase Installer](#download-the-hydrobase-installer)
-* [Run HydroBase Installer for the First Time](#run-hydrobase-installer-for-the-first-time)
-* [Accept HydroBase License](#accept-hydrobase-license)
-* [Select HydroBase Components to Install](#select-hydrobase-components-to-install)
-* [Install SQL Server Express](#install-sql-server-express)
-* [Run HydroBase Installer for the Second Time](#run-hydrobase-installer-for-the-second-time)
-* [Attach HydroBase Database to SQL Server using the HydroBase Database Manager](#attach-hydrobase-database-to-sql-server-using-the-hydrobase-database-manager)
-* [Attach HydroBase Database](#attach-hydrobase-database)
-* [Test Database Connection](#test-database-connection)
-* [Configure ColoradoHydroBaseRest Datastore in TSTool (version 12.06.00)](#configure-coloradohydrobaserest-datastore-in-tstool-(version-12.06.00))
-* [Troubleshooting](#troubleshooting)
-* [Troubleshooting Remote Access to HydroBase Database Server](#troubleshooting-remote-access-to-hydrobase-database-server)
+* [Introduction](#introduction)
+* [Download the HydroBase Installer Package](#download-the-hydrobase-installer-package)
+* [Installing a local SQL Server (CDSS) Instance](#installing-a-local-sql-server-cdss-instance)
+	* [Verify SQL Server is Configured Properly](#verify-sql-server-is-configured-properly)
+		* [Verify that SQL Server (CDSS) Service is Running](#verify-that-sql-server-cdss-service-is-running)
+		* [Verify that SQL Server Browser Service is Running](#verify-that-sql-server-browser-service-is-running)
+		* [Verify SQL Server Network Configuration](#verify-sql-server-network-configuration)
+* [Installing HydroBase Database Manager](#installing-hydrobase-database-manager)
+* [Attaching Versions of HydroBase to Local SQL Server (CDSS) Instance](#attaching-versions-of-hydrobase-to-local-sql-server-cdss-instance)
+* [Troublehsooting](#troubleshooting)
+	* [Uninstalling Previous Versions of SQL Server](#uninstalling-previous-versions-of-sql-server)
+	* [Determining What Version of SQL Server (CDSS) is Installed](#determining-what-version-of-sql-server-cdss-is-installed)
+	* [Errors when Installing SQL Server or Trying to Attach a HydroBase File](#errors-when-installing-sql-server-or-trying-to-attach-a-hydrobase-file)
+	* [Testing HydroBase Connect](#testing-hydrobase-connect)
+	* [CDSS Tools Unable to Connect to Local HydroBase Version](#cdss-tools-unable-to-connect-to-local-hydrobase-version)
+* [Configure ColoradoHydroBaseRest Datastore in TSTool (version 12.06.00)](#configure-coloradohydrobaserest-datastore-in-tstool-version-120600)
+	* [Troubleshooting ColoradoHydroBaseRest Datastore ](#troubleshooting-coloradohydrobaserest-datastore)
+	* [Troubleshooting Remote Access to HydroBase Database Server](#troubleshooting-remote-access-to-hydrobase-database-server)
 
 ------------
 
-## Download the HydroBase Installer ##
+## Introduction ##
 
-The HydroBase installer is provided as a .zip file (“HydroBaseDVD_20140719.zip”) and is available on 
-the [CDSS FTP site](https://dnrftp.state.co.us/#/DWR/Modeling/HydroBase/).
+This document explains how to install the State of Colorado Division of Water Resources’ HydroBase on a computer.  
 
-Download the file to a temporary location, for example using a folder name that matches the database version:
+The State of Colorado's HydroBase database is maintained by the Colorado Division of Water Resources (DWR) and contains 
+water rights, structures, diversions, irrigated lands, streamflow, and other data.
 
-	C:\Users\YourLogin\Downloads\HydroBaseDVD_20140719
+Images of HydroBase are released periodically on the Colorado Department of Natural Resources' [FTP Site](https://dnrftp.state.co.us/#/DWR/Modeling/HydroBase/). 
+These images are often used for modeling purposes and can be queried with CDSS software such as 
+[TSTool](https://cdss.colorado.gov/software/tstool) and [StateDMI](https://cdss.colorado.gov/software/statedmi). 
 
-Then unzip the file to expand the contents, for example using the Winzip or free 7Zip software to create a folder like:
+## Download the HydroBase Installer Package ##
 
-	C:\Users\YourLogin\Downloads\HydroBaseDVD_20140719\dvd
+The CDSS Local HydroBase Installer package is available by downloading the following file:
 
-The above folder will contain all of the files needed to install HydroBase.  It is important to actually unzip the files so 
-that the installer will work properly.
+[https://dnrftp.state.co.us/DWR/Modeling/HydroBase/CDSSLocalHydroBase_Installer.zip](https://dnrftp.state.co.us/DWR/Modeling/HydroBase/CDSSLocalHydroBase_Installer.zip)
 
-## Run HydroBase Installer for the First Time ##
+Download the file and then unzip the file to expand its contents to a temporary location. It is important to actually unzip the files so that the installer(s) will work properly.
 
-To install the full HydroBase, run the Setup.exe file in the installer files.  This will be in the folder from the download 
-(section 2 above) or the DVD drive (section 3 above).  If installing from a DVD the Setup.exe may run automatically on some 
-computers when the DVD is inserted into the computer.  The HydroBase installer should be run with administrative privileges 
-to ensure that SQL Server and CDSS software is properly installed and configured, for example as shown in the following figure 
-(right-click to display the pop-up menu):
+You will also want to download a current HydroBase version. The following web site contains an archive of all HydroBase snapshots available to the public.
+
+[https://dnrftp.state.co.us/DWR/Modeling/HydroBase/](https://dnrftp.state.co.us/DWR/Modeling/HydroBase/)
+
+
+## Installing a local SQL Server (CDSS) Instance ##
+
+In the directory where the CDSS Local HydroBase Installer package is extracted, there is a directory labelled 
+“CDSS_Database”.  Navigate to this directory and double click on **SQLEXPR_x64_ENU.exe**, this will start the SQL 
+Server Express setup process.
 
 ![image1](images/image1.png)
 
-## Accept HydroBase License ##
-
-The following screen will be displayed showing the HydroBase license.  In actuality, the agreement is more of a disclaimer 
-than a license.  Those who install HydroBase should understand that although the State has invested in the development of 
-the software installer, they do not warranty the software or database.
+1) Specify the temporary location for the SQL Server Express installation files.
 
 ![image2](images/image2.png)
 
-Press ***I Agree*** to continue the installation.
-
-## Select HydroBase Components to Install ##
-
-The installer will ask for components to install, as shown in the following figure.  The only change to consider is 
-selecting ***CDSS GIS files***, which will install shapefiles and other data in the C:\CDSS\GIS folder.  These files are 
-used by CDSS software such as StateView and provide data directly that would otherwise need to be downloaded from the 
-State’s website.
+1) Select “New SQL Server stand-alone installation…”
 
 ![image3](images/image3.png)
 
-Press ***Install*** to start the installation process.
+1) Click checkbox to accept the Microsoft license terms
 
-## Install SQL Server Express ##
-
-HydroBase requires installing SQL Server Express, which is a free version of Microsoft’s SQL Server database.  The 
-installation program will detect if a previous CDSS “instance” of SQL Server is already installed and asks for input 
-as needed.  Installing a CDSS instance of SQL Server helps isolate the HydroBase SQL Server from other SQL Server 
-versions that may be installed on the computer.  Installing the HydroBase SQL Server is a multi-step process that will 
-require re-running the installer two times, first to install software, and second to configure the database user accounts.
-
-The following dialog is shown at the start of the SQL Server installation process:
+2) Click Next
 
 ![image4](images/image4.png)
 
-Press ***OK*** to continue the installation.  An informative dialog is then displayed:
+Recommend NOT checking the “Use Microsoft Update…” checkbox
+
+1) Click Next
 
 ![image5](images/image5.png)
+This will verify that the computer meets requirements for SQL Server Express installation. You may need to address Failed Rules before being able to proceed.
 
-Press ***OK*** to continue the installation.  The following progress dialog will be shown:
+1) Click Next
 
 ![image6](images/image6.png)
+1) If desired, you can override the default Instance root directory
 
-The SQL Server installation is a fairly long process and will likely take several minutes.  The following dialog will be 
-shown after the initial installation process is complete:
+2) Click Next
 
 ![image7](images/image7.png)
+1) **CRITICAL** Set Named Instance to CDSS
 
-Make sure to save work in other programs and then press ***Yes*** to reboot the computer.
+2) **CRITICAL** Set Instance ID to CDSS
 
-## Run HydroBase Installer for the Second Time ##
-
-After the computer restarts, login, and re-run the HydroBase installer program, as shown in the following figure 
-(right click to display the popup menu):
+3) Click Next
 
 ![image8](images/image8.png)
-
-Similar to before you will be asked to accept the license, as shown below.
+1) Click Next
 
 ![image9](images/image9.png)
 
-Press ***I Agree*** to continue the installation.   Similar to before, you will be asked to confirm the components. 
-Make sure that the ***CDSS GIS Files*** checkbox is as desired.
+1) Change Authentication Mode to “Mixed Mode”
+
+2) **CRITICAL** Set password to CdssHydr0B@se and confirm password
+
+3) Click Next
 
 ![image10](images/image10.png)
+1) Click Close
 
-Press ***Install*** to start the installation process.  Because the previous installation steps resulted in a CDSS 
-instance of SQL Server being installed, the following dialog will be shown:
+SQL Server Express should now be successfully installed.
+
+### Verify SQL Server is Configured Properly ###
 
 ![image11](images/image11.png)
+1) Click on the Windows Start button, and type `SQL Server 2019 Configuration Manager`
 
-A couple of command shell windows will be displayed indicating that SQL Server is stopping and starting.  The progress 
-dialog will then display similar to the following:
+2) Click on the program icon.
+
+#### Verify that SQL Server (CDSS) service is running ####
 
 ![image12](images/image12.png)
 
-Press ***Close*** to start the installation.  A final information dialog will be shown as in the following figure:
+1) Click on SQL Server Services
+
+2) Verify there is a line called SQL Server (CDSS) with a State of Running.  If it is not running, 
+right click on the line and select “Properties”.
 
 ![image13](images/image13.png)
 
-At this point the CDSS instance of HydroBase is running on the computer and the TSTool and StateView software have been 
-silently installed under the ***Start…CDSS*** menu.  You can verify that the CDSS instance of SQL Server is running by 
-searching for Local Services:
+1) Click on the Service tab
+
+2) Click on the Start Mode drop-down and change to “Automatic”
+
+Click the OK button
+
+Right hand click on the SQL Server Browser line and select “Start”.
+
+
+#### Verify that SQL Server Browser service is running ####
 
 ![image14](images/image14.png)
 
-Click on ***View local services*** in the above to display the services list, as shown in the following figure. Scroll 
-down to see ***SQL Server (CDSS)*** service, which should have a status of Started.
+1) Click on SQL Server Services
+
+2) Right hand click on the SQL Server Browser line and select “Properties”.
 
 ![image15](images/image15.png)
 
-At this point, although the CDSS instance of SQL Server is running, the HydroBase database is not yet attached to the 
-database software.  To complete this step, close the above services window and press ***OK*** on the HydroBase 
-installation dialog to start the HydroBase Database Manager, which is discussed in the next section.
+1) Click on the Service tab
 
-## Attach HydroBase Database to SQL Server using the HydroBase Database Manager ##
+2) Click on the Start Mode drop-down and change to “Automatic”
 
-Note that the remaining steps are the same as if installing a HydroBase update distributed as a zip file.
+Click the OK button
 
-If not automatically done as part of the previous step, start the HydroBase Database Manger:
+Right hand click on the SQL Server Browser line and select “Start”.
 
-	Start … CDSS … HydroBase Database Manager
-
-If the software is not available in the Start menu, the menu may have not have been set up during installation and the 
-software needs to be run manually:
-
-	C:\Program Files (x86)\Division of Water Resources\HydroBase Database Manager\HydroBaseMaintenanceUtility.exe
-
-The HydroBase Database Manager will display the following:
+#### Verify SQL Server Network Configuration ####
 
 ![image16](images/image16.png)
 
-A blank list under ***Currently Installed Databases*** indicates that the CDSS instance of SQL Server does not have 
-any HydroBase databases attached to it.  To attach a database, either insert the HydroBase DVD (if being used for 
-the installation) or select a HydroBase file from a folder on the computer in the next step.  Press ***OK*** in the 
-rightmost dialog shown in the above figure to continue.
+1) Expand the SQL Server Network Configuration option
 
-## Attach HydroBase Database ##
-
-Press the ***Attach DB*** button.  This will display a file selector dialog.  If installing from the DVD, navigate 
-to the DVD and select the zipped HydroBase file, for example:
-
-	D:\CDSS\Data\HydroBase_CO_20140719.zip
-
-If installing from a folder on the computer from an internet download of the database, select the following, for example:
-
-	C:\Users\YourLogin\Downloads\HydroBaseDVD_20140719\dvd\CDSS\Data\ HydroBase_CO_20140719.zip
-
-Select the file and press ***Open*** in the file selector.  The HydroBase Database Manager will unzip the file to the 
-SQL Server database folder and will attach the database to SQL Server so that it can be used.
-
-Note:  If for some reason you copied the zip file to a temporary location and want it removed after installing, check 
-the “Delete File On Detachment?” box in the HydroBase Database Manager.  The default (do not delete file) is the typical 
-selection.
-
-The following dialog will be shown, indicating that the HydroBase zip file is being extracted (see message in bottom 
-of dialog):
+2) TCP/IP should be enabled. If not, right click on TCP/IP and select Enabled. You should be prompted to stop and restart the service.
 
 ![image17](images/image17.png)
 
-If successful, the newly attached database should be listed as shown below (in this case ***Currently Installed Databases*** 
-actually means databases that are installed and attached to the CDSS instance of SQL Server):
+To restart the service:
 
 ![image18](images/image18.png)
 
-Press ***Exit*** to exit the HydroBase Database Manager tool.
+1) Click on SQL Server Services
 
-## Test Database Connection ##
+2) Right hand click on SQL Server (CDSS)
 
-To test the database connection, start TSTool using ***Start…CDSS…TSTool-Version*** (where Version will be the current 
-version of TSTool released with the HydroBase DVD) and select the latest HydroBase database, as shown in the following figure:
+3) Click on Restart
+
+## Installing HydroBase Database Manager ##
+
+HydroBase Database Manager is used to connect snapshots of HydroBase to the SQL Server (CDSS) 
+instance on the computer.   If you have not already done so, go to the DNR FTP Site and download 
+a version of HydroBase.
+
+
+**Recommendation**
+
+We recommend downloading and extracting HydroBase versions in a directory similar to “C:\HydroBase\Data\” 
+to make managing versions of HydroBase easier.
+
+In the directory where the CDSS Local HydroBase Installer package is extracted, there is a directory labelled 
+“HydroBaseDbManager”.  Navigate to this directory and double click on **setup.exe**, this will start the SQL Server 
+Express setup process.
 
 ![image19](images/image19.png)
 
-The correct Database Hostname may be ***local*** or ***localhost\CDSS***.
-
-Then specify query parameters as shown in the following figure and press ***Get Time Series List***.  If HydroBase is 
-accessible, time series should be listed as shown in the upper right area in the following figure.
+1) Click Next
 
 ![image20](images/image20.png)
+
+1) If desired, you can override the default Instance root directory
+2) Click Next
+
+![image21](images/image21.png)
+
+1) Click Next
+
+![image22](images/image22.png)
+
+1) Click Close
+
+Hydrobase Database Manager should now be successfully installed.
+
+The setup program does not create a Start Menu shortcut.  You may want to create a shortcut to the application. 
+The manager application is located in:
+
+C:\Program Files (x86)\Division of Water Resources\Hydrobase Database Manager
+
+The shortcut target should be **HydroBaseMaintenanceUtilty.exe**.  We also include an ICO file if you want to change the 
+shortcut icon.
+
+## Attaching versions of HydroBase to local SQL Server (CDSS) Instance ##
+
+To attach versions of HydroBase, you will need to run the HydroBase Database Manager. If you did not create a shortcut 
+when you initially installed the program then the manager is located in:
+
+C:\Program Files (x86)\Division of Water Resources\Hydrobase Database Manager
+
+Run the **HydroBaseMaintenanceUtilty.exe** program.
+
+![image23](images/image23.png)
+
+1) Click OK
+
+![image24](images/image24.png)
+
+1) Click the Attach DB
+
+![image25](images/image25.png)
+
+1) Navigate to the directory where you extracted the Hydrobase version to and select the file you want to attach.
+
+2) Click Open
+
+![image26](images/image26.png)
+
+Microsoft will suggest you move the file to the SQL Data Directory but we recommend keeping it in the DATA directory 
+you created to store and organize HydroBase versions.
+
+![image27](images/image27.png)
+
+1) Click Exit
+
+## Troubleshooting ##
+
+### Uninstalling Previous Versions of SQL Server ###
+
+Older versions of SQL Server can run into security issues after Microsoft Security patches are released. 
+For this reason, we recommend using the most recent version of SQL Server Express included in the installation package.
+
+To make uninstalling previous versions of SQL Server (CDSS) easier, we have included uninstall batch files 
+in the “Troubleshooting” folder.
+
+Follow the steps in [Determining What Version of SQL Server (CDSS) is Installed](#determining-what-version-of-sql-server-cdss-is-installed) 
+and then run the appropriate uninstall batch file. Double click the .bat file to run the batch file. 
+
+### Determining what version of SQL Server (CDSS) is installed ###
+
+* Open a command prompt window (Run as Administrator) .
+* Execute the following command:
+* SQLCMD -S localhost\CDSS
+* At the 1 > prompt, type `select @@version` and press `<Enter>`.
+* At the 2 > prompt, type `go` and press `<Enter>`.
+* The SQL version running on the server displays in the dialog box.
+
+### Errors when installing SQL Server or trying to attach a HydroBase file ###
+
+When you try to install SQL Server or attach a database file you get one of the following messages:
+
+`SqlServer.Configuration.Sco.DirectoryAttributesMissmatch: Folder C:\Program Files\Microsoft SQL Server has an unsupported attribute (Compressed) set. Please resolve this issue by removing the unsupported attribute from the folder using folder properties dialog.`
+
+`SqlServer.Configuration.SetupExtension.CompressedDirException: The specified directory, “C:\Program Files\Microsoft SQL Server\”, for the INSTALLSHAREDDIR parameter is not valid because this directory is compressed or is in a compressed directory. Specify a directory that is not compressed.`
+
+`SqlServer.Configuration.SetupExtension.CompressedDirException: The specified directory, “C:\Program Files (x86)\Microsoft SQL Server\”, for the INSTALLSHAREDWOWDIR parameter is not valid because this directory is compressed or is in a compressed directory. Specify a directory that is not compressed.`
+
+![image28](images/image28.png)
+
+* On the desired folder (in this case “C:\Program Files”) right click and go to properties.
+
+* Click on the “Advanced” button.
+
+* Uncheck the box “Compress the drive to save space”
+
+* Click Apply and then OK.
+
+* Let the process finish.
+
+### Testing HydroBase Connect ###
+In the directory where the CDSS Local HydroBase Installer package is extracted, there is a directory 
+labelled “Troubleshooting”.  Navigate to this directory and double click on **TestDatabase_Connection.udl**, 
+this will start the Data Link Properties dialog.
+
+![image29](images/image29.png)
+
+1) Click the “Select the database on server…” drop-down.  You should see a list of all databases attached to 
+your SQL Server (CDSS) Instance.
+	
+If you get the following message:
+
+![image30](images/image30.png)
+
+* SQL Server was not configured properly. See the [Verify SQL Server is Configured Properly](#verify-sql-server-is-configured-properly) section. 
+* If SQL Server is configured properly then the CDSS Instance or Mixed Mode password may have been entered incorrectly during installation.
+* If SQL Server is configured properly and you entered the Mix Mode password properly, please use [Ask DWR](https://dwr.state.co.us/Portal/dwr/AskDWR?topicNum=5&officeNum=8&subject=Local%20HydroBase%20Installation%20Troubleshooting) to request help.  Please include any error messages you are getting.
+
+2) Click the Test Connection Button
+
+If you get Test Connection succeed then the database and permissions are successfully configured.
+
+If you get Test Connection failed:
+* See the [Verify SQL Server is Configured Properly](#verify-sql-server-is-configured-properly) section
+* If SQL Server is configured properly, please use [Ask DWR](https://dwr.state.co.us/Portal/dwr/AskDWR?topicNum=5&officeNum=8&subject=Local%20HydroBase%20Installation%20Troubleshooting) to request help.  Please include any error messages you are getting.
+
+3) Click OK.
+
+### CDSS Tools Unable to Connect to Local HydroBase Version ###
+
+Unfortunately, if either the SQL Server (CDSS) Instance or HydroBase Database Manager fails it can be 
+difficult to troubleshoot. The State of Colorado DWR staff has attempted to put together and test an 
+installation guide that will work with Windows 10 but may not have resources to help diagnose all issues 
+that might be uniquely configured on local machines.
+
+Software such as virus checkers and firewalls may interfere with communication between the TSTool software 
+and HydroBase. 
+
+OpenCDSS also includes additional [Troubleshooting](http://opencdss.state.co.us/tstool/13.03.00dev/doc-user/troubleshooting/troubleshooting/#issue-2b-error-connecting-to-state-of-colorados-hydrobase-database-on-local-computer) 
+documentation that may be useful to identify and resolve issues.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Configure ColoradoHydroBaseRest Datastore in TSTool (version 12.06.00) ##
 
@@ -245,13 +392,7 @@ ApiKey = "YOUR_API_KEY"
 ServiceApiDocumentationUri = "https://dnrweb.state.co.us/DWR/DwrApiService/Help"
 ```
 
-## Troubleshooting ##
-
-Unfortunately, if the HydroBase Database Manager fails, it can be difficult to troubleshoot.  
-
-Software such as virus checkers and firewalls may interfere with communication between the TSTool software and HydroBase. 
-For example a warning may be displayed when TSTool is started because TSTool tries to locate database servers.  Granting 
-access to TSTool often resolves this issue.
+### Troubleshooting ColoradoHydroBaseRest Datastore ###
 
 If the HydroBase datastore is configured as described above but is not listed under ***View…Datastores***, then try the 
 following:
@@ -262,7 +403,7 @@ following:
 * Scroll down to “SQL Server Browser” and start the service.  If the service Startup Type is not listed as “Automatic”, 
 right-click on the service to edit its properties and set to automatic.
 
-## Troubleshooting Remote Access to HydroBase Database Server ##
+### Troubleshooting Remote Access to HydroBase Database Server ###
 
 It is possible to install HydroBase on one computer and access it from another machine, for example in an office setting. 
 In this case the HydroBase datastore configuration file may look similar to the following:
@@ -283,11 +424,11 @@ In this case the `DatabaseServer` property is simply the computer name (no trail
 results in an error connecting to HydroBase, it may be due to the server computer running a firewall that prevents database 
 traffic.  For example, if using the Windows Firewall on Windows 7, start the configuration tool as follows:
 
-![image21](images/image21.png)
+![image31](images/image31.png)
 
 Next, select ***Inbound Rules*** item on the left:
 
-![image22](images/image22.png)
+![image32](images/image32.png)
 
 Then select the ***Action...New Rule*** menu (make sure that no Inbound Rules are select for this menu item to be available). 
 Then select the following:
