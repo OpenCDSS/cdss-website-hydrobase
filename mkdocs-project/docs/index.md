@@ -292,6 +292,24 @@ When you try to install SQL Server or attach a database file you get one of the 
 
 * Let the process finish.
 
+If you receive the following error when attempting to attach a database to the HydroBase Database Manager:
+
+![image33](images/image33.jpg)
+
+You will need to set permissions on the .mdf and .ldf files. This may require administrator access.
+
+* Right click each file, and click "Properties" 
+
+* Choose the "Security" tab
+
+* Select the MSSQL$CDSS Group or user name.
+
+* Under "Edit", set all Permissions to "Allow".
+
+![image34](images/image34.png)
+
+![image35](images/image35.png)
+
 ### Testing HydroBase Connect ###
 In the directory where the CDSS Local HydroBase Installer package is extracted, there is a directory 
 labelled “Troubleshooting”.  Navigate to this directory and double click on **TestDatabase_Connection.udl**, 
