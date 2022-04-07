@@ -15,6 +15,7 @@ This page includes the following sections:
 * [Attaching Versions of HydroBase to Local SQL Server (CDSS) Instance](#attaching-versions-of-hydrobase-to-local-sql-server-cdss-instance)
 * [Troublehsooting](#troubleshooting)
 	* [Uninstalling Previous Versions of SQL Server](#uninstalling-previous-versions-of-sql-server)
+	* [SQL Server Express Out of Date](#sql-server-express-out-of-date)
 	* [Determining What Version of SQL Server (CDSS) is Installed](#determining-what-version-of-sql-server-cdss-is-installed)
 	* [Errors when Installing SQL Server or Trying to Attach a HydroBase File](#errors-when-installing-sql-server-or-trying-to-attach-a-hydrobase-file)
 	* [Testing HydroBase Connect](#testing-hydrobase-connect)
@@ -260,6 +261,15 @@ in the “Troubleshooting” folder.
 
 Follow the steps in [Determining What Version of SQL Server (CDSS) is Installed](#determining-what-version-of-sql-server-cdss-is-installed) 
 and then run the appropriate uninstall batch file. Double click the .bat file to run the batch file. 
+
+### SQL Server Express Out of Date ###
+
+If the following error message is received:
+
+![image36](images/image36.PNG)
+
+Your downloaded version of SQL Server Express is out of date. SQL Server Express (CDSS) should be uninstalled and 
+the latest version should be downloaded from [Microsoft](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 
 ### Determining what version of SQL Server (CDSS) is installed ###
 
