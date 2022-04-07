@@ -1,6 +1,6 @@
 # How to Install the Full HydroBase Database from the Cloud (Internet)#
 
-**Last updated: 2021-01-30**
+**Last updated: 2022-04-07**
 
 This page includes the following sections:
 
@@ -266,9 +266,9 @@ and then run the appropriate uninstall batch file. Double click the .bat file to
 
 If the following error message is received:
 
-![image36](images/image36.PNG)
+![image36](images/image36.png)
 
-Your downloaded version of SQL Server Express is out of date. SQL Server Express (CDSS) should be uninstalled and 
+your downloaded version of SQL Server Express is out of date. SQL Server Express (CDSS) should be uninstalled and 
 the latest version should be downloaded from [Microsoft](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 
 ### Determining what version of SQL Server (CDSS) is installed ###

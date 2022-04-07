@@ -3,7 +3,7 @@
 # Reference: http://www.mkdocs.org/user-guide/configuration/
 #
 site_name: 'Attach HydroBase Locally'
-pages:
+nav:
 - Home: index.md
 # ------- configuration properties ---------------
 # Use Material theme
