@@ -114,7 +114,7 @@ SQL Server Express should now be successfully installed.
 ![image11](images/image11.png)
 1) Click on the Windows Start button, and type `SQL Server 2019 Configuration Manager`
 
-2) Click on the program icon.
+2) Click on "Run as administrator".
 
 #### Verify that SQL Server (CDSS) service is running ####
 
@@ -314,11 +314,28 @@ You will need to set permissions on the .mdf and .ldf files. This may require ad
 
 * Select the MSSQL$CDSS Group or user name.
 
+If MSSQL$CDSS is not listed under "Group or user names":
+
+* Click "Edit"
+
+* Click "Add" 
+
+* Type in "NT Service\MSSQL$CDSS"
+
+![image37](images/image37.png)
+
+* Click "Check Names". "MSSQL$CDSS" should appear underlined. Click OK.
+
+![image38](images/image38.png)
+
+Once MSSQL$CDSS is selected:
+
 * Under "Edit", set all Permissions to "Allow".
 
 ![image34](images/image34.png)
 
 ![image35](images/image35.png)
+
 
 ### Testing HydroBase Connect ###
 In the directory where the CDSS Local HydroBase Installer package is extracted, there is a directory 
