@@ -1,5 +1,16 @@
 /* Custom styles to override MkDocs defaults and enhance theme */
 
+a:link {
+	text-decoration: underline;
+  }
+  a:hover {
+	text-decoration: underline;
+  }
+  
+  a:active {
+	text-decoration: underline;
+  }
+
 /* Unordered list <ul> symbols:
  * - level 2 is hollow circle
  * - level 3 is filled square

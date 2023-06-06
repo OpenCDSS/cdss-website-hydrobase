@@ -409,7 +409,7 @@ but the datastore provides newer software capabilities).
 
 The following configuration file (provided with TSTool installer C:\CDSS\TSTool-Version\system\ColoradoHydroBaseRest.cfg) 
 indicates how to enable the HydroBase REST datastore in TSTool. In order for the Datastore to work, an API key must be 
-obtained from the [DWR website](https://dnrweb.state.co.us/DNR/Portal/Dwr/WebServiceManager). An account must be created 
+obtained from the [DWR website](https://dwr.state.co.us/rest/get/help). An account must be created 
 with the DWR website, and then the API key (or Web Service Token) will be provided. 
 
 ```text
